@@ -1,17 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrfastapp/src/pages/home_page.dart';
 import 'package:qrfastapp/src/pages/register_page.dart';
-import 'package:qrfastapp/src/pages/settings_page.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
+// import 'package:qrfastapp/src/pages/settings_page.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/providers/user_provider.dart';
-import 'package:qrfastapp/src/utils/utils.dart';
+import 'package:qrfastapp/src/utils/utils.dart' as utils;
+
 
 class LoginPage extends StatelessWidget {
   static final String routeName = 'login';
-
+  final _prefs = new UserPreferences();
   final userProvider = new UserProvider();
+  TextEditingController _emailController;
   @override
   Widget build(BuildContext context) {
+    _emailController = new TextEditingController(text: _prefs.userEmail);
     return Scaffold(
       body: Stack(
         children: [
@@ -30,8 +35,8 @@ class LoginPage extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromRGBO(63, 63, 156, 1.0),
-            Color.fromRGBO(90, 70, 178, 1.0)
+            utils.primary,
+            utils.secondary
           ]
         )
       ),
@@ -41,7 +46,7 @@ class LoginPage extends StatelessWidget {
       height: 100.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100.0),
-        color: Color.fromRGBO(255, 255, 255, 0.05)
+        color: Color.fromRGBO(255, 255, 255, 0.25)
       ),
     );
 
@@ -122,9 +127,10 @@ class LoginPage extends StatelessWidget {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: TextField(
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              icon: Icon(Icons.alternate_email,color: Colors.deepPurpleAccent,),
+              icon: Icon(Icons.alternate_email,color: utils.primary),
               hintText: 'ejemplo@correo.com',
               labelText: 'Correo',
               counterText: snapshot.data,
@@ -146,7 +152,7 @@ class LoginPage extends StatelessWidget {
           child: TextField(
             obscureText: true,
             decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline,color: Colors.deepPurpleAccent,),
+              icon: Icon(Icons.lock_outline,color:utils.primary,),
               hintText: 'password',
               labelText: 'Contraseña',
               errorText: snapshot.error
@@ -171,7 +177,7 @@ class LoginPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0)
           ),
           elevation: 0.0,
-          color: Colors.deepPurpleAccent,
+          color: utils.primaryLight,
           textColor: Colors.white,
           onPressed: snapshot.hasData ? ()=>_login(bloc,context) :null,
         );
@@ -185,7 +191,7 @@ class LoginPage extends StatelessWidget {
     if ( info['ok'] ) {
        Navigator.pushReplacementNamed(context, HomePage.routeName);
     } else {
-      mostrarAlerta( context, info['mensaje'] );
+      utils.mostrarErrorAlert( context, info['mensaje'] );
     }
   }
 }

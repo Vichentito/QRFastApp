@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrfastapp/src/pages/home_page.dart';
+import 'package:qrfastapp/src/pages/login_page.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/providers/user_provider.dart';
 import 'package:qrfastapp/src/utils/utils.dart';
@@ -179,9 +179,11 @@ class RegisterPage extends StatelessWidget {
   _register(LoginBloc bloc, BuildContext context)async{
     final info = await userProvider.newUser(bloc.email, bloc.password);
     if ( info['ok'] ) {
-       Navigator.pushReplacementNamed(context, HomePage.routeName);
+       mostrarSuccesfulAlert( context, info['mensaje'] );
+       await Future.delayed(new Duration(seconds: 3));
+       Navigator.pushReplacementNamed(context, LoginPage.routeName);
     } else {
-      mostrarAlerta( context, info['mensaje'] );
+      mostrarErrorAlert( context, info['mensaje'] );
     }
   }
 }

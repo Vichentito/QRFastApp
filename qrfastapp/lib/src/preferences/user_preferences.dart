@@ -33,8 +33,6 @@ class UserPreferences {
   set token( String value ) {
     _prefs.setString('token', value);
   }
-  
-
   // GET y SET de la última página
   get ultimaPagina {
     return _prefs.getString('ultimaPagina') ?? 'login';
@@ -43,5 +41,29 @@ class UserPreferences {
   set ultimaPagina( String value ) {
     _prefs.setString('ultimaPagina', value);
   }
+  // GET y SET de email
+  get userEmail {
+    return _prefs.getString('userEmail') ?? '';
+  }
+  set userEmail( String value ) {
+    _prefs.setString('userEmail', value);
+  }
+  // GET y SET de password
+  get userPassword {
+    return _prefs.getString('userPassword') ?? '';
+  }
+
+  set userPassword( String value ) {
+    _prefs.setString('userPassword', value);
+  }
+  // GET y SET de id de carrito activo
+  get userCartId {
+    return _prefs.getString('userCartId') ?? '';
+  }
+
+  set userCartId( String value ) {
+    _prefs.setString('userCartId', value);
+  } 
+
 
 }

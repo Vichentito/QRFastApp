@@ -15,9 +15,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  bool _initialized = false;
-  bool _error = false;
-
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsBloc productsBloc;
@@ -28,34 +25,9 @@ class _ProductPageState extends State<ProductPage> {
 
   File photo;
 
-  void initializeFlutterFire() async {
-    try {
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch(e) {
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    initializeFlutterFire();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     productsBloc = Provider.productsBloc(context);
-    if(_error) {
-      return Text("error");
-    }
-    if (!_initialized) {
-      return Text("No inicio");
-    }
     final ProductModel prodData = ModalRoute.of(context).settings.arguments;
     if ( prodData != null ) {
       product = prodData;
@@ -84,6 +56,7 @@ class _ProductPageState extends State<ProductPage> {
             child: Column(
               children: <Widget>[
                 _mostrarFoto(),
+                _crearId(),
                 _crearNombre(),
                 _crearPrecio(),
                 _crearDescripcion(),
@@ -99,6 +72,8 @@ class _ProductPageState extends State<ProductPage> {
   Widget _crearNombre() {
     return TextFormField(
       initialValue: product.name,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         labelText: 'Producto'
@@ -115,9 +90,30 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+  Widget _crearId() {
+    return TextFormField(
+      initialValue: product.idProduct.toString(),
+      keyboardType: TextInputType.numberWithOptions(decimal: false),
+      decoration: InputDecoration(
+        labelText: 'Id de producto'
+      ),
+      validator: (value) {
+        if ( value.length < 0 ) {
+          return 'Ingrese el id del producto';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) => product.idProduct = int.parse(value),
+      
+    );
+  }
+
   Widget _crearDescripcion() {
     return TextFormField(
       initialValue: product.description,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         labelText: 'Descripcion'
@@ -195,7 +191,6 @@ class _ProductPageState extends State<ProductPage> {
       product.image = imageUrl;
     }
     if ( product.id == null ) {
-      product.idProduct = utils.randomInt();
       productsBloc.agregarProducto(product);
     }else {
       productsBloc.editarProducto(product);

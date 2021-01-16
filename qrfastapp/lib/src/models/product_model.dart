@@ -5,7 +5,6 @@ ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.deco
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
-    static final int max = 1000;
     String id;
     int idProduct;
     String name;
@@ -15,7 +14,7 @@ class ProductModel {
 
     ProductModel({
         this.id,
-        this.idProduct,
+        this.idProduct=0,
         this.name = '',
         this.description = '',
         this.price = 0.0,

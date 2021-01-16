@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:http/http.dart' as http;
@@ -11,36 +12,40 @@ class ProductsProvider {
 
   final String _url = 'https://qrfast-ef149-default-rtdb.firebaseio.com';
   final _prefs = new UserPreferences();
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<bool> crearProducto( ProductModel product ) async {
-    final url = '$_url/products.json?auth=${ _prefs.token }';
-    final resp = await http.post( url, body: productModelToJson(product) );
-    final decodedData = json.decode(resp.body);
+    final url = '$_url/products.json?auth=${ auth.currentUser.getIdToken() }';
+    await http.post( url, body: productModelToJson(product) );
+    //final decodedData = json.decode(resp.body);
     //print( decodedData );
     return true;
 
   }
 
   Future<bool> editarProducto( ProductModel product ) async {
-    final url = '$_url/products/${ product.id }.json?auth=${ _prefs.token }';
-    final resp = await http.put( url, body: productModelToJson(product) );
-    final decodedData = json.decode(resp.body);
+    final url = '$_url/products/${ product.id }.json?auth=${ auth.currentUser.getIdToken() }';
+    await http.put( url, body: productModelToJson(product) );
+    //final decodedData = json.decode(resp.body);
     //print( decodedData );
     return true;
   }
 
-  Future<ProductModel> getOneProduct( ProductModel product ) async {
+  Future<ProductModel> getOneProduct(int idProduct ) async {
     List<ProductModel> products = await cargarProductos();
+    ProductModel product;
     products.forEach((element) {
-      print(element);
+      if(element.idProduct == idProduct){
+        product = element;
+      }
     });
     //print( decodedData );
-    return products[0];
+    return product;
 
   }
 
   Future<List<ProductModel>> cargarProductos() async {
-    final url  = '$_url/products.json?auth=${ _prefs.token }';
+    final url  = '$_url/products.json?auth=${ await auth.currentUser.getIdToken() }';
     final resp = await http.get(url);
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductModel> products = new List();
@@ -59,8 +64,8 @@ class ProductsProvider {
 
 
   Future<int> borrarProducto( String id ) async { 
-    final url  = '$_url/products/$id.json?auth=${ _prefs.token }';
-    final resp = await http.delete(url);
+    final url  = '$_url/products/$id.json?auth=${ auth.currentUser.getIdToken() }';
+    await http.delete(url);
     //print( resp.body );
     return 1;
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrfastapp/src/widgets/menu_widget.dart';
+// import 'package:qrfastapp/src/widgets/menu_widget.dart';
 
 class AccountPage extends StatefulWidget {
   static final String routeName = 'account';

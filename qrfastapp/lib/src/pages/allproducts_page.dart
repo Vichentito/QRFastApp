@@ -52,7 +52,24 @@ class _AllProductsPageState extends State<AllProductsPage> {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
+        padding: EdgeInsets.only(left: 20.0),
+        alignment: Alignment.centerLeft,
         color: Colors.red,
+        child: Text(
+            'Borrar',
+            textAlign: TextAlign.left,
+            style: TextStyle(color: Colors.white),
+        ),
+      ),
+      secondaryBackground: Container(
+        padding: EdgeInsets.only(right: 20.0),
+        alignment: Alignment.centerRight,
+        color: Colors.red,
+        child: Text(
+            'Borrar',
+            textAlign: TextAlign.right,
+            style: TextStyle(color: Colors.white),
+        ),
       ),
       onDismissed: ( direccion )=> productsBloc.borrarProducto(product.id),
       child: Card(

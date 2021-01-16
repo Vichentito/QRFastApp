@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrfastapp/src/blocs/cart_bloc.dart';
 import 'package:qrfastapp/src/blocs/loging_bloc.dart';
 import 'package:qrfastapp/src/blocs/products_bloc.dart';
 import 'package:qrfastapp/src/providers/ui_provider.dart';
@@ -10,6 +11,7 @@ class Provider extends InheritedWidget{
   final loginBloc = LoginBloc();
   final _optProvider = UiProvider();
   final _productsBloc = new ProductsBloc();
+  final _cartBloc = CartBloc();
 
   static Provider _instancia;
 
@@ -36,6 +38,10 @@ class Provider extends InheritedWidget{
 
   static ProductsBloc productsBloc ( BuildContext context ){
     return context.dependOnInheritedWidgetOfExactType<Provider>()._productsBloc;
+  }
+
+  static CartBloc cartBloc ( BuildContext context ){
+    return context.dependOnInheritedWidgetOfExactType<Provider>()._cartBloc;
   }
 
 }

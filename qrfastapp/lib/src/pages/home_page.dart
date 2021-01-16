@@ -6,6 +6,7 @@ import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/widgets/menu_widget.dart';
 import 'package:qrfastapp/src/widgets/navigationBar_widget.dart';
 import 'package:qrfastapp/src/widgets/qrScanButton_widget.dart';
+import 'package:qrfastapp/src/utils/utils.dart' as utils;
 
 class HomePage extends StatelessWidget {
   static final String routeName = 'home';
@@ -15,7 +16,8 @@ class HomePage extends StatelessWidget {
     optProvider.changeOpt(1);
     return Scaffold(
       appBar: AppBar(
-        title: Text('QRFast')
+        title: Text('QRFast',style: TextStyle(color: utils.white),),
+        iconTheme: IconThemeData(color: utils.white),
       ),
       body: _HomePageBody(),
       drawer: MenuWidget(),

@@ -10,12 +10,14 @@ import 'package:rxdart/rxdart.dart';
 class ProductsBloc {
 
   final _productsController = new BehaviorSubject<List<ProductModel>>();
+  final _productController = new BehaviorSubject<ProductModel>();
   final _cargandoController  = new BehaviorSubject<bool>();
 
   final _productsProvider   = new ProductsProvider();
 
 
   Stream<List<ProductModel>> get productosStream => _productsController.stream;
+  Stream<ProductModel> get productoStream => _productController.stream;
   Stream<bool> get cargando => _cargandoController.stream;
 
 
@@ -23,6 +25,11 @@ class ProductsBloc {
   void cargarProductos() async {
     final products = await _productsProvider.cargarProductos();
     _productsController.sink.add( products );
+  }
+
+  void obtenerUno(int idProduct) async {
+    final product = await _productsProvider.getOneProduct(idProduct);
+    _productController.sink.add( product );
   }
 
   void agregarProducto( ProductModel product ) async {
@@ -55,6 +62,7 @@ class ProductsBloc {
   dispose() {
     _productsController?.close();
     _cargandoController?.close();
+    _productController?.close();
   }
 
 }
