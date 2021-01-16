@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qrfastapp/src/pages/account_page.dart';
 import 'package:qrfastapp/src/pages/qrHome_page.dart';
 import 'package:qrfastapp/src/pages/shoppingCart_page.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/widgets/menu_widget.dart';
 import 'package:qrfastapp/src/widgets/navigationBar_widget.dart';
@@ -13,7 +14,21 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final optProvider = Provider.opProvider(context);
-    optProvider.changeOpt(1);
+    final _prefs = new UserPreferences();
+    if(_prefs.ultimoTab != ''){
+      switch (_prefs.ultimoTab) {
+        case 'cart':
+          optProvider.changeOpt(0);
+          break;
+        case 'qrhome':
+          optProvider.changeOpt(1);
+          break;
+        default:
+          optProvider.changeOpt(1);
+      }
+    }else{
+      optProvider.changeOpt(1);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('QRFast',style: TextStyle(color: utils.white),),

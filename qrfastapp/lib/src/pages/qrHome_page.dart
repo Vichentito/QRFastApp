@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/widgets/products_horizontal.dart';
 
 class QrHomePage extends StatefulWidget {
+  static final String routeName = 'qrhome';
   @override
   _QrHomePageState createState() => _QrHomePageState();
 }
 
 class _QrHomePageState extends State<QrHomePage> {
-  
   @override
   Widget build(BuildContext context) {
-    final productsBloc = Provider.productsBloc(context);   
+    final productsBloc = Provider.productsBloc(context);
+    productsBloc.cargarProductos();
     return Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

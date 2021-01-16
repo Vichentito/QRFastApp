@@ -34,12 +34,12 @@ class UserPreferences {
     _prefs.setString('token', value);
   }
   // GET y SET de la última página
-  get ultimaPagina {
-    return _prefs.getString('ultimaPagina') ?? 'login';
+  get ultimoTab {
+    return _prefs.getString('ultimoTab') ?? 'login';
   }
 
-  set ultimaPagina( String value ) {
-    _prefs.setString('ultimaPagina', value);
+  set ultimoTab( String value ) {
+    _prefs.setString('ultimoTab', value);
   }
   // GET y SET de email
   get userEmail {

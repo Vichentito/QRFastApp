@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qrfastapp/src/models/cart_model.dart';
-import 'package:qrfastapp/src/models/product_model.dart';
+import 'package:qrfastapp/src/models/productToBuy_model.dart';
 import 'package:qrfastapp/src/providers/products_provider.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 
@@ -39,9 +39,9 @@ class QrScanButton extends StatelessWidget {
             return;
           }
           int idProduct = int.parse(barcode.split(':')[1]);
-          ProductModel product = await productsProvider.getOneProduct(idProduct);
+          ProductToBuyModel product = await productsProvider.getOneProduct(idProduct);
           if(cartProvider.cartIdValue == null){
-            final List<ProductModel> products = new List();
+            final List<ProductToBuyModel> products = new List();
             products.add(product);
             cartModel.date = DateTime.now();
             cartModel.products = products;

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:qrfastapp/src/models/productToBuy_model.dart';
 import 'package:qrfastapp/src/models/product_model.dart';
 import 'package:qrfastapp/src/providers/products_provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,14 +11,14 @@ import 'package:rxdart/rxdart.dart';
 class ProductsBloc {
 
   final _productsController = new BehaviorSubject<List<ProductModel>>();
-  final _productController = new BehaviorSubject<ProductModel>();
+  final _productController = new BehaviorSubject<ProductToBuyModel>();
   final _cargandoController  = new BehaviorSubject<bool>();
 
   final _productsProvider   = new ProductsProvider();
 
 
   Stream<List<ProductModel>> get productosStream => _productsController.stream;
-  Stream<ProductModel> get productoStream => _productController.stream;
+  Stream<ProductToBuyModel> get productoStream => _productController.stream;
   Stream<bool> get cargando => _cargandoController.stream;
 
 

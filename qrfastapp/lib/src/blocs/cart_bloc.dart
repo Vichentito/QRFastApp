@@ -1,6 +1,7 @@
 //import 'dart:io';
 
 import 'package:qrfastapp/src/models/cart_model.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
 import 'package:qrfastapp/src/providers/cart_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,8 +22,16 @@ class CartBloc {
   String get cartIdValue => _cartIdController.value;
   CartModel get cartValue => _cartController.value;
 
+  
+  final _prefs = new UserPreferences();
+
   void crearCarrito(CartModel cartToSave) async {
     final id = await _cartProvider.crearCarrito(cartToSave);
+    _cartIdController.sink.add(id);
+    _prefs.userCartId = id;
+  }
+
+  void crearCarritoFromPreferences(String id) async {
     _cartIdController.sink.add(id);
   }
 

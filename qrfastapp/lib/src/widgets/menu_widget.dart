@@ -4,7 +4,9 @@ import 'package:qrfastapp/src/pages/allproducts_page.dart';
 import 'package:qrfastapp/src/pages/login_page.dart';
 import 'package:qrfastapp/src/pages/product_page.dart';
 import 'package:qrfastapp/src/pages/settings_page.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
 import 'package:qrfastapp/src/utils/utils.dart' as utils;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuWidget extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -57,6 +59,8 @@ class MenuWidget extends StatelessWidget {
             title: Text("Cerrar sesion"),
             onTap: ()async{
               Navigator.pop(context);
+              SharedPreferences preferences = await SharedPreferences.getInstance();
+              await preferences.remove('userCartId');
               await auth.signOut();
               Navigator.pushNamed(context, LoginPage.routeName);
             },

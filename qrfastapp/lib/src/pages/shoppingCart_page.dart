@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qrfastapp/src/blocs/cart_bloc.dart';
 import 'package:qrfastapp/src/models/cart_model.dart';
-import 'package:qrfastapp/src/models/product_model.dart';
+import 'package:qrfastapp/src/models/productToBuy_model.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
+import 'package:qrfastapp/src/providers/products_provider.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/utils/utils.dart' as utils;
+import 'package:qrfastapp/src/widgets/paymentButton_widget.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   static final String routeName = 'cart';
@@ -12,16 +15,27 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
+  final formKey = GlobalKey<FormState>();
+  CartModel cart = CartModel();
+  ProductToBuyModel productToUpdate = ProductToBuyModel();
+  final productsProvider = ProductsProvider();
   @override
   Widget build(BuildContext context) {
-  final cartBloc = Provider.cartBloc(context);
-  cartBloc.cargarCarro();
+    final cartBloc = Provider.cartBloc(context);
+    final _prefs = UserPreferences();
+    if(_prefs.userCartId != ''){
+      cartBloc.crearCarritoFromPreferences(_prefs.userCartId);
+    }
+    cartBloc.cargarCarro();
 
-  return RefreshIndicator(
-    onRefresh: refreshPage,
-    color: utils.primaryLight,
-    child: _crearListado(cartBloc),
-  );
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: refreshPage,
+        color: utils.primaryLight,
+        child: _crearListado(cartBloc),
+      ),
+      floatingActionButton: PaymentButton(),
+    );
   }
   Widget _crearListado(CartBloc cartBloc) {
     return StreamBuilder(
@@ -37,6 +51,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             return ListView.builder(
               itemCount: productos.products.length,
               itemBuilder: (context, i) => _crearItem(context,cartBloc,productos.products[i] ),
+              
             );
           }
         } else {
@@ -47,7 +62,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  Widget _crearItem(BuildContext context,CartBloc cartBloc ,ProductModel product ) {
+  Widget _crearItem(BuildContext context,CartBloc cartBloc ,ProductToBuyModel product ) {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
@@ -91,7 +106,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   child: ListTile(
                     title: Text('${ product.name }'),
                     subtitle: Text('Precio \$${product.price}'),
-                    trailing: Text("Cantidad"),
+                    trailing: Text("Cantidad\n ${product.quantity}"),
                     onTap: ()=> _mostrarAlert(context,product)
                   ),
                 ),
@@ -103,7 +118,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  void _mostrarAlert(BuildContext context,ProductModel product){
+  void _mostrarAlert(BuildContext context, ProductToBuyModel product){
+    final cartProvider = Provider.cartBloc(context);
+    productToUpdate = product;
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -128,7 +145,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-              _crearPrecio()
+              Form(
+                key: formKey,
+                child: _crearCantidad()
+              )
             ],
           ),
           actions: [
@@ -138,7 +158,22 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             ),
             FlatButton(
               child: Text("Guardar"),
-              onPressed: (){
+              onPressed: ()async {
+                if ( !formKey.currentState.validate() ) return;
+                formKey.currentState.save();
+                cart.date = cartProvider.cartValue.date;
+                final tempProducts = cartProvider.cartValue.products;
+                List<ProductToBuyModel> tempList = [];
+                tempProducts.forEach((element) {
+                  if(element.idProduct != product.idProduct){
+                    tempList.add(element);
+                  }
+                });
+                ProductToBuyModel productReference = await productsProvider.getOneProduct(productToUpdate.idProduct);
+                productToUpdate.price = productReference.price * productToUpdate.quantity;
+                tempList.add(productToUpdate);
+                cart.products = tempList;
+                cartProvider.actualizarCarro(cart);
                 Navigator.of(context).pop();
               },
             )
@@ -149,14 +184,14 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   }
 
   
-  Widget _crearPrecio() {
+  Widget _crearCantidad() {
     return TextFormField(
-      initialValue: '1',
+      initialValue: productToUpdate.quantity.toString(),
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: InputDecoration(
         labelText: 'Cantidad'
       ),
-      onSaved: null,
+      onSaved: (value) => productToUpdate.quantity = int.parse(value),
       validator: (value) {
         if ( utils.isNumeric(value)  ) {
           return null;

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:qrfastapp/src/models/product_model.dart';
+import 'package:qrfastapp/src/models/productToBuy_model.dart';
 
 CartModel cartModelFromJson(String str) => CartModel.fromJson(json.decode(str));
 
@@ -9,7 +9,7 @@ String cartModelToJson(CartModel data) => json.encode(data.toJson());
 class CartModel {
     String id;
     DateTime date;
-    List<ProductModel> products;
+    List<ProductToBuyModel> products;
 
     CartModel({
         this.id,
@@ -19,7 +19,7 @@ class CartModel {
 
     factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         date: DateTime.parse(json["date"]),
-        products: List<ProductModel>.from(json["products"].map((x) => ProductModel.fromJson(x))),
+        products: List<ProductToBuyModel>.from(json["products"].map((x) => ProductToBuyModel.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
