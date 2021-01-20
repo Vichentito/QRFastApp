@@ -23,6 +23,9 @@ class HomePage extends StatelessWidget {
         case 'qrhome':
           optProvider.changeOpt(1);
           break;
+        case 'account':
+          optProvider.changeOpt(2);
+          break;
         default:
           optProvider.changeOpt(1);
       }

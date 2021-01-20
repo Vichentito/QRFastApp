@@ -23,8 +23,8 @@ class _QrHomePageState extends State<QrHomePage> {
           ],
         ),
       );
-  
   }
+  
   _cardInicio(){
     final card = Container(
       child: Column(

@@ -38,23 +38,29 @@ class MenuWidget extends StatelessWidget {
             title: Text("Ayuda"),
             onTap: (){},
           ),
+          Visibility(
+            visible: utils.isAdmin(auth.currentUser.uid),
+            child: ListTile(
+              leading: Icon(Icons.add,color: utils.primaryLight,),
+              title: Text("Agregar Productos"),
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, ProductPage.routeName);
+              },
+            ),
+          ),
+          Visibility(
+            visible: utils.isAdmin(auth.currentUser.uid),
+            child: ListTile(
+              leading: Icon(Icons.list,color: utils.primaryLight,),
+              title: Text("Todos Productos"),
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, AllProductsPage.routeName);
+              },
+            ),
+          ),
           ListTile(
-            leading: Icon(Icons.add,color: utils.primaryLight,),
-            title: Text("Agregar Productos"),
-            onTap: (){
-              Navigator.pop(context);
-              Navigator.pushNamed(context, ProductPage.routeName);
-            },
-          ),
-           ListTile(
-            leading: Icon(Icons.list,color: utils.primaryLight,),
-            title: Text("Todos Productos"),
-            onTap: (){
-              Navigator.pop(context);
-              Navigator.pushNamed(context, AllProductsPage.routeName);
-            },
-          ),
-           ListTile(
             leading: Icon(Icons.list,color: utils.primaryLight,),
             title: Text("Cerrar sesion"),
             onTap: ()async{

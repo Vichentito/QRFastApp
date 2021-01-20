@@ -3,6 +3,7 @@ import 'package:qrfastapp/src/pages/login_page.dart';
 import 'package:qrfastapp/src/providers/provider.dart';
 import 'package:qrfastapp/src/providers/user_provider.dart';
 import 'package:qrfastapp/src/utils/utils.dart';
+import 'package:qrfastapp/src/utils/utils.dart' as utils;
 
 class RegisterPage extends StatelessWidget {
   static final String routeName = 'register';
@@ -27,8 +28,8 @@ class RegisterPage extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromRGBO(63, 63, 156, 1.0),
-            Color.fromRGBO(90, 70, 178, 1.0)
+            utils.primary,
+            utils.secondary
           ]
         )
       ),
@@ -38,7 +39,7 @@ class RegisterPage extends StatelessWidget {
       height: 100.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100.0),
-        color: Color.fromRGBO(255, 255, 255, 0.05)
+        color: Color.fromRGBO(255, 255, 255, 0.25)
       ),
     );
 
@@ -121,7 +122,7 @@ class RegisterPage extends StatelessWidget {
           child: TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              icon: Icon(Icons.alternate_email,color: Colors.deepPurpleAccent,),
+              icon: Icon(Icons.alternate_email,color: utils.primaryLight,),
               hintText: 'ejemplo@correo.com',
               labelText: 'Correo',
               counterText: snapshot.data,
@@ -143,7 +144,7 @@ class RegisterPage extends StatelessWidget {
           child: TextField(
             obscureText: true,
             decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline,color: Colors.deepPurpleAccent,),
+              icon: Icon(Icons.lock_outline,color: utils.primaryLight,),
               hintText: 'password',
               labelText: 'Contraseña',
               errorText: snapshot.error
@@ -168,7 +169,7 @@ class RegisterPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0)
           ),
           elevation: 0.0,
-          color: Colors.deepPurpleAccent,
+          color: utils.primaryLight,
           textColor: Colors.white,
           onPressed: snapshot.hasData ? ()=>_register(bloc,context) :null,
         );

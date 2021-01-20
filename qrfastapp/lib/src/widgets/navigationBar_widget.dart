@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrfastapp/src/pages/account_page.dart';
 import 'package:qrfastapp/src/pages/qrHome_page.dart';
 import 'package:qrfastapp/src/pages/shoppingCart_page.dart';
 import 'package:qrfastapp/src/preferences/user_preferences.dart';
@@ -30,6 +31,9 @@ class _NavigationBarState extends State<NavigationBar> {
                   break;
                 case 1:
                   _prefs.ultimoTab = QrHomePage.routeName;
+                  break;
+                case 2:
+                  _prefs.ultimoTab = AccountPage.routeName;
                   break;
                 default:
                   _prefs.ultimoTab = QrHomePage.routeName;

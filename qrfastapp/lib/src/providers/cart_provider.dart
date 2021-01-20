@@ -20,10 +20,10 @@ class CartProvider {
   }
 
   Future<CartModel> cargarCarro(String id) async {
-      final url  = '$_url/carts/$id.json?auth=${await auth.currentUser.getIdToken()}';
-      final resp = await http.get(url);
-      final cart = cartModelFromJson(resp.body);
-      return cart;
+    final url  = '$_url/carts/$id.json?auth=${await auth.currentUser.getIdToken()}';
+    final resp = await http.get(url);
+    final cart = cartModelFromJson(resp.body);
+    return cart;
   }
 
   Future<CartModel> agregarProducto( String id, CartModel cart) async {
@@ -35,12 +35,11 @@ class CartProvider {
     return cartFinal;
   }
 
-  // Future<int> borrarProducto( String id ) async { 
-  //   final url  = '$_url/products/$id.json?auth=${ auth.currentUser.getIdToken() }';
-  //   final resp = await http.delete(url);
-  //   //print( resp.body );
-  //   return 1;
-  // }
+  Future<void> borrarProducto( String id ) async { 
+    final url  = '$_url/carts/$id.json?auth=${await auth.currentUser.getIdToken()}';
+    final resp = await http.delete(url);
+    //print( resp.body );
+  }
 
 
 }

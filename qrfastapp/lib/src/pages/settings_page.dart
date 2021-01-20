@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qrfastapp/src/preferences/user_preferences.dart';
+import 'package:qrfastapp/src/providers/provider.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String routeName = 'settings';
@@ -8,11 +10,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _colorSecundario;
+  bool _credentials;
   int _genero;
   String _nombre = 'Pedro';
 
   TextEditingController _textController;
+
+  final _prefs = UserPreferences();
   
   @override
   void initState() {
@@ -20,14 +24,14 @@ class _SettingsPageState extends State<SettingsPage> {
     //prefs.ultimaPagina = SettingsPage.routeName;
     //_genero = prefs.genero;
     //_colorSecundario = prefs.colorSecundario;
-    _colorSecundario = false;
+    _credentials = true;
     _textController = new TextEditingController( text: _nombre );
   }
-  _setSelectedRadio( int valor ) {
-    //prefs.genero = valor;
-    _genero = valor;
-    setState(() {});
-  }
+  // _setSelectedRadio( int valor ) {
+  //   //prefs.genero = valor;
+  //   _genero = valor;
+  //   setState(() {});
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,50 +40,33 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(5.0),
-            child: Text('Settings', style: TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold )),
-          ),
           Divider(),
           SwitchListTile(
-            value: _colorSecundario,
-            title: Text('Color secundario'),
+            value: _credentials,
+            title: Text('Guardar credenciales al cerrar sesión'),
             onChanged: ( value ){
               setState(() {
-                _colorSecundario = value;
-                //prefs.colorSecundario = value;
+                _credentials = value;
+                if(_credentials == false){
+                  _prefs.userEmail = '';
+                  _prefs.userPassword = ''; 
+                }
               });
             },
           ),
-          RadioListTile(
-            value: 1,
-            title: Text('Masculino'),
-            groupValue: _genero,
-            onChanged: _setSelectedRadio,
-          ),
-
-          RadioListTile(
-            value: 2,
-            title: Text('Femenino'),
-            groupValue: _genero,
-            onChanged: _setSelectedRadio
-          ),
-
-          Divider(),
-
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                labelText: 'Nombre',
-                helperText: 'Nombre de la persona usando el teléfono',
-              ),
-              onChanged: ( value ) {
-                //prefs.nombreUsuario = value;
-              },
-            ),
-          )
+          // Container(
+          //   padding: EdgeInsets.symmetric(horizontal: 20.0),
+          //   child: TextField(
+          //     controller: _textController,
+          //     decoration: InputDecoration(
+          //       labelText: 'Nombre',
+          //       helperText: 'Nombre de la persona usando el teléfono',
+          //     ),
+          //     onChanged: ( value ) {
+          //       //prefs.nombreUsuario = value;
+          //     },
+          //   ),
+          // )
 
 
 

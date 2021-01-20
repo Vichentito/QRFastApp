@@ -50,6 +50,13 @@ class CartBloc {
     _cartController.sink.add( cart );
   }
 
+  void borrarCarro(String id)async{
+    await _cartProvider.borrarProducto(id);
+    final cart = new CartModel(date: DateTime.now(),products: List()); 
+    _cartIdController.value = null;
+    _cartController.sink.add( cart );
+  }
+
 
   dispose() {
     _cartController?.close();

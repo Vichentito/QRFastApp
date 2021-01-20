@@ -63,3 +63,14 @@ void mostrarSuccesfulAlert(BuildContext context, String mensaje ) {
     }
   );
 }
+
+bool isAdmin(String id){
+  final admins = ['R3yZ8cqaodYnGDancvyDvFizd2c2'];
+  bool result = false;
+  admins.forEach((element) {
+    if(id == element){
+      result = true;
+    }
+  });
+  return result;
+}
