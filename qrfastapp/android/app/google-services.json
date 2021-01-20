@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:519098508935:android:47d800ed11728f22b4fa22",
+        "mobilesdk_app_id": "1:519098508935:android:d2ad33be7192ded7b4fa22",
         "android_client_info": {
-          "package_name": "com.vicenteescom.qrfastapp"
+          "package_name": "com.escom.qrfast"
         }
       },
       "oauth_client": [
